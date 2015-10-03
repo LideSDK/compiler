@@ -1,6 +1,6 @@
 -- llc -i main.lua -o main.dll
 -- llc -i 'modulo.boton modulo.label' -o modulo.dll
-
+----dasdadadsa
 function precompile ( output, rootdir, outputdir, input_names)
 	os.execute ('precompiler -o '..output..' -l "'..rootdir..'\\?.lua" -d "'..outputdir..'" -n ' .. input_names)
 	table.insert(tempfiles, output..".c")
