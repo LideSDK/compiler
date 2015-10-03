@@ -1,6 +1,6 @@
 local OS_NAME, EX_NAME, BU_TYPE, INCLUDE, LIBRARIES, LIBNAME
 
-tempfiles = {}
+local tempfiles = {}
 
 function getParam( arg, nArg, sArg, sParam )
 	if ( sArg:sub(1,2) == sParam ) then
