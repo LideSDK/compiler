@@ -22,12 +22,18 @@ registered = {
 	end,
 
 	['-o'] = function ( output )
-		app.command_output = output
+		app.output_file = output
 	end
 }
 
 registered ['--help'] = registered['-h']
 
+app.folders = {}
+--if 'lide.lua' == arg[0]:sub(#arg[0] - 7, #arg[0]) then
+	app.folders.sourcefolder = arg[0]:sub(1, #arg[0] , #arg[0])
+--end
+
+print(app.folders.sourcefolder..'**')
 
 if not app.preco_linux or not app.preco_win32 then
 	print('No se encuentra:\n%s\n%s', app.preco_linux, app.preco_win32)
