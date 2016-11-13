@@ -8,23 +8,29 @@ The principal goal is have a easy tool for build our self lua scripts.
 Usage
 *****
 
+============  ======================================================================================
+ Option        Description
+============  ======================================================================================
+  -o   	   	    Output filename
+============  ======================================================================================
+
 .. code-block:: bash
 
 	$ lidec <input_file> -o <output_file> 
 
-	$ lidec -o file.exe test_script.lua >> output is "file.exe"
-	$ lidec test_script.lua >> output is "output.out"
+	$ lidec -o file.exe test_script.lua     >> output is "file.exe"
+	$ lidec test_script.lua                 >> output is "output.out"
 
-============  ======================================================================================
- OPTIONS       DESCRIPTION
-============  ======================================================================================
- -o   	   	   Output filename
-============  ======================================================================================
 
-GNU/Linux Installation
-======================
+Installation
+============
 
 * Clone this repository:
+* Run the build script 'build_linux.sh' or 'build_windows.bat'
+* Execute './lidec --help' command
+
+GNU/Linux Installation
+**********************
 
 .. code-block:: bash
 
