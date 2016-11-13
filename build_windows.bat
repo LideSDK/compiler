@@ -1,7 +1,5 @@
 @echo off
-gcc -I ./include -l lib\win\lua5.1 -o ./srlua/srlua ./srlua/srlua.c -lm
-gcc -I ./include -l lib\win\lua5.1 -o ./srlua/glue ./srlua/glue.c  -lm
 
-./srlua/glue ./lib/precolide_win32 lidec.lua ./lidec.exe
+.\tools\glue-winx86 .\tools\srlua-winx86.exe lidec.lua .\lidec.exe
 
-echo "> Lide compiler builded successfuly."
+echo '> Lide compiler builded successfuly.'
