@@ -1,3 +1,15 @@
+-- /////////////////////////////////////////////////////////////////////////////////////////////////
+-- // Name:        lidec.lua
+-- // Purpose:     Lua5.1 Compiler
+-- // Author:      Hernán Dario Cano [dario.canohdz@gmail.com]
+-- // Created:     2016/11/13
+-- // Copyright:   (c) 2016 Hernan Dario Cano
+-- // License:     MIT License/X11 license
+-- /////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- GNU/Linux Lua version:   5.1.5
+-- Windows x86 Lua version: 5.1.4
+
 LUA_EXECUTABLE = 0
 LUA_LIBRARY    = 1
 
@@ -5,6 +17,7 @@ LINUX_X86      = 0
 WINDOWS_X86    = 1
 
 app = app or {}
+app.folders = {}
 
 -- set default values:
 app.output_file = 'output.out'
@@ -28,12 +41,12 @@ registered = {
 
 registered ['--help'] = registered['-h']
 
-app.folders = {}
---if 'lide.lua' == arg[0]:sub(#arg[0] - 7, #arg[0]) then
-	app.folders.sourcefolder = arg[0]:sub(1, #arg[0] , #arg[0])
---end
-
-print(app.folders.sourcefolder..'**')
+if arg and arg[0] then
+	local sf = arg[0]:sub(1, #arg[0] , #arg[0])
+	local n  = sf:reverse():find ('/', 1 ) or sf:reverse():find ('\\', 1 ) or 0
+		  sf = sf:reverse():sub (n+1, # sf:reverse()) : reverse()
+	_sourcefolder = sf
+end
 
 if not app.preco_linux or not app.preco_win32 then
 	print('No se encuentra:\n%s\n%s', app.preco_linux, app.preco_win32)
@@ -55,6 +68,13 @@ end
 read_args(arg)
 
 function glue_linux ( inputfile, outputfile)
+	local file, errm = io.open (inputfile);
+	if not file then
+		local message = 'lidec: Error: %s'
+		print(message:format(errm))
+		return false
+	end
+
 	local preco_bin = app.preco_linux
 	local cmd = ('./glue %s %s %s'):format(preco_bin, inputfile, outputfile)
 	os.execute (cmd)
