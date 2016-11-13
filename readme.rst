@@ -36,9 +36,8 @@ GNU/Linux Installation
 
 	$ git clone https://github.com/lidesdk/compiler.git compiler
 	$ cd compiler
-	$ chmod +x ./build.sh && ./build.sh
+	$ chmod +x ./build.sh && ./build.sh && ./chmod +x ./lidec
 	> Lide compiler builded successfuly.
-	$ ./chmod +x ./lidec
 	$ ./lidec --help
 
 
@@ -49,7 +48,7 @@ Windows Installation
 
 	$ git clone https://github.com/lidesdk/compiler.git compiler
 	$ cd compiler
-	$ build.bat
+	$ build
 	> Lide compiler builded successfuly.
 	$ lidec --help
 

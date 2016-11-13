@@ -41,6 +41,77 @@ registered = {
 
 registered ['--help'] = registered['-h']
 
+print = { lua = print }
+
+local function locals(lvel)
+   	local variables = {}
+   	local idx = 1
+   	while true do
+    	local ln, lv = debug.getlocal(2 +(lvel or 0), idx)
+      	if ln ~= nil then
+      		variables[ln] = lv
+    	else
+      		break
+    	end
+    	idx = 1 + idx
+  	end
+  	return variables
+end
+
+local function upvalues()
+  	local variables = {}
+  	local idx = 1
+  	local func = debug.getinfo(2 + (lvel or 0), "f").func
+  	
+  	while true do
+    	local ln, lv = debug.getupvalue(func, idx)
+    	if ln ~= nil then
+    		variables[ln] = lv
+    	else
+    		break
+    	end
+    	idx = 1 + idx
+ 	end
+  	return variables
+end
+
+local function globals( ... )
+	return _G
+end
+
+print.error = function ( str )
+	local var_value, var_name, pr1, pr2, pr3, pr4
+
+	if str:find '%$' then
+	    pr1, pr2  = str:find('%$');
+	    pr3, pr4  = str:find('%$', (pr1 or 0)+2);
+	   
+	    var_name  = str:sub((pr1 or 0) +1, pr3 -1);
+
+	    if var_name:find '%.' then
+	   		local tbl_var = var_name:sub(1, var_name:find('%.')-1);
+	   		local idx_var = var_name:sub(var_name:find('%.')+1, #var_name);
+	   		var_value = locals (1)  [tbl_var] or upvalues(1) [tbl_var]  or globals() [tbl_var]
+	    else
+	   		var_value = locals (1)  [var_name] or upvalues(1) [var_name]  or globals() [var_name]
+	    end
+	    
+	    if not var_value then
+			assert( false, ('lide: error fatal: la variable "%s" no existe..'):format (var_name) )
+		end
+
+		print( str:sub(1, pr1-1) .. tostring(var_value) .. str:sub(pr4 +1, #str))
+	else
+		print( str )
+	end
+
+	
+end
+
+setmetatable( print, { __call = function ( self, ... )
+	print.lua ( ... )
+end })
+
 if arg and arg[0] then
 	local sf = arg[0]:sub(1, #arg[0] , #arg[0])
 	local n  = sf:reverse():find ('/', 1 ) or sf:reverse():find ('\\', 1 ) or 0
@@ -70,8 +141,7 @@ read_args(arg)
 function glue_linux ( inputfile, outputfile)
 	local file, errm = io.open (inputfile);
 	if not file then
-		local message = 'lidec: Error: %s'
-		print(message:format(errm))
+		print.error 'lidec: error: $errm$.'
 		return false
 	end
 
@@ -83,6 +153,5 @@ end
 if app.input_file then
 	glue_linux(app.input_file, app.output_file)
 else
-	print 'lidec: error fatal: no input files.'
+	print.error 'lidec: error fatal: no input files.'
 end
-
